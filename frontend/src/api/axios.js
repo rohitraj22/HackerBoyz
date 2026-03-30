@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const configuredBaseUrl = String(import.meta.env.VITE_API_BASE_URL || 'https://hacker-boyz-backend-cr43.vercel.app').trim();
+const configuredBaseUrl = String(import.meta.env.VITE_API_BASE_URL || 'https://hackerboyz.onrender.com').trim();
 
 const api = axios.create({
   baseURL: configuredBaseUrl,
