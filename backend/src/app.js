@@ -8,8 +8,8 @@ import reportRoutes from './routes/reportRoutes.js';
 import historyRoutes from './routes/historyRoutes.js';
 import { notFound } from './middlewares/notFound.js';
 import { errorHandler } from './middlewares/errorHandler.js';
-import authRoutes from "./routes/authRoutes.js";
-import cookieParser from "cookie-parser";
+import authRoutes from './routes/authRoutes.js';
+import cookieParser from 'cookie-parser';
 import homeRoutes from './routes/homeRoutes.js';
 import inventoryRoutes from './routes/inventoryRoutes.js';
 import discoveryRoutes from './routes/discoveryRoutes.js';
@@ -21,7 +21,14 @@ import reportingRoutes from './routes/reportingRoutes.js';
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+
+app.use(
+  cors({
+    origin: true, // reflect requesting origin
+    credentials: true, // allow cookies/auth headers
+  })
+);
+
 app.use(morgan('dev'));
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -30,11 +37,11 @@ app.use(cookieParser());
 app.get('/health', (req, res) => {
   res.json({
     success: true,
-    message: 'Backend is healthy'
+    message: 'Backend is healthy',
   });
 });
 
-app.use("/api/auth", authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/scans', scanRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api', reportRoutes);
