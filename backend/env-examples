@@ -1,0 +1,25 @@
+# Environment template for backend/.env
+# Copy these keys into backend/.env and replace values as needed.
+
+NODE_ENV=development
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/quantum-scanner
+CLIENT_URL=http://localhost:5173
+
+JWT_SECRET=replace-with-a-strong-random-secret
+
+# Gemini AI (optional, fallback logic is used if empty)
+GEMINI_API_KEY=
+
+# SMTP (required for scheduled email report delivery)
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your-smtp-user
+SMTP_PASS=your-smtp-password
+SMTP_FROM=no-reply@example.com
+
+# Optional scanner paths (set if using external binaries)
+TLS_ANALYZER_PATH=./tools/tlsanalyzer.exe
+CRYPTODEPS_PATH=./tools/cryptodeps.exe
+CRYPTOSCAN_PATH=./tools/cryptoscan.exe
