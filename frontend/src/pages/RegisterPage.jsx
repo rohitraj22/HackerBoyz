@@ -102,6 +102,16 @@ export default function RegisterPage() {
         <p className="auth-switch">
           Already have an account? <Link to="/login">Login</Link>
         </p>
+
+        <div className="auth-team-credit">
+          <p className="auth-team-title">Built by Team Hackerboyz</p>
+          <ul className="auth-team-list" aria-label="Team members">
+            <li>Dipendra Pratap Singh</li>
+            <li>Kartikeya Katiyar</li>
+            <li>Rohit Raj</li>
+            <li>Vedansh Pandey</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

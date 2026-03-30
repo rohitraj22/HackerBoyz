@@ -151,7 +151,7 @@ export default function ReportingPage() {
   const [scheduling, setScheduling] = useState(false);
   const [scheduleNotice, setScheduleNotice] = useState('');
   const [onDemandNotice, setOnDemandNotice] = useState('');
-  const [onDemandDownloadUrl, setOnDemandDownloadUrl] = useState('');
+  const [onDemandDownloadReportId, setOnDemandDownloadReportId] = useState('');
   const [editingScheduleId, setEditingScheduleId] = useState('');
   const [updatingScheduleId, setUpdatingScheduleId] = useState('');
   const [deletingScheduleId, setDeletingScheduleId] = useState('');
@@ -332,6 +332,11 @@ export default function ReportingPage() {
     return `${String(hour).padStart(2, '0')}:${String(Number(minute)).padStart(2, '0')}`;
   };
 
+  const toIstScheduleDateTime = (date, hour12, minute, period) => {
+    const hhmm = to24HourTime(hour12, minute, period);
+    return `${date}T${hhmm}:00+05:30`;
+  };
+
   const toggleScheduleSection = (sectionKey) => {
     setScheduleForm((prev) => ({
       ...prev,
@@ -354,11 +359,12 @@ export default function ReportingPage() {
       setError('');
       setScheduleNotice('');
 
-      const nextRunAt = `${scheduleForm.date}T${to24HourTime(
+      const nextRunAt = toIstScheduleDateTime(
+        scheduleForm.date,
         scheduleForm.timeHour,
         scheduleForm.timeMinute,
         scheduleForm.timePeriod
-      )}`;
+      );
 
       const payload = {
         name:
@@ -553,7 +559,7 @@ export default function ReportingPage() {
       setGeneratingOnDemand(true);
       setError('');
       setOnDemandNotice('');
-      setOnDemandDownloadUrl('');
+      setOnDemandDownloadReportId('');
 
       const payload = {
         reportType: onDemandForm.reportType,
@@ -576,9 +582,8 @@ export default function ReportingPage() {
         setGenerated((prev) => [report, ...prev]);
       }
 
-      const suggestedDownloadUrl = res.data?.downloadUrl || (report?._id ? `/api/reporting/generated/${report._id}/download` : '');
-      if (onDemandForm.includeDownloadLink && suggestedDownloadUrl) {
-        setOnDemandDownloadUrl(suggestedDownloadUrl);
+      if (onDemandForm.includeDownloadLink && report?._id) {
+        setOnDemandDownloadReportId(report._id);
       }
 
       setOnDemandNotice(res.data?.message || 'On-demand report generated successfully.');
@@ -1337,10 +1342,22 @@ export default function ReportingPage() {
           {onDemandNotice ? (
             <div className="empty-state on-demand-notice">
               <span>{onDemandNotice}</span>
-              {onDemandDownloadUrl ? (
-                <a href={onDemandDownloadUrl} className="btn btn-secondary" target="_blank" rel="noreferrer">
-                  Open Download URL
-                </a>
+              {onDemandDownloadReportId ? (
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    const candidate = generated.find((item) => item?._id === onDemandDownloadReportId);
+                    const fallback = {
+                      _id: onDemandDownloadReportId,
+                      format: onDemandForm.format,
+                      reportType: onDemandForm.reportType,
+                    };
+                    downloadReportById(candidate || fallback);
+                  }}
+                >
+                  Download Report
+                </button>
               ) : null}
             </div>
           ) : (

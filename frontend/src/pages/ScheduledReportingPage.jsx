@@ -16,6 +16,20 @@ const initialForm = {
   nextRunAt: '',
 };
 
+function normalizeScheduleDateTime(nextRunAt = '', timezone = 'Asia/Kolkata') {
+  const raw = String(nextRunAt || '').trim();
+  if (!raw) return '';
+
+  const hasOffset = /(?:z|[+-]\d{2}:\d{2})$/i.test(raw);
+  if (hasOffset) return raw;
+
+  if (timezone === 'Asia/Kolkata') {
+    return `${raw}:00+05:30`;
+  }
+
+  return raw;
+}
+
 export default function ScheduledReportingPage() {
   const [form, setForm] = useState(initialForm);
   const [message, setMessage] = useState('');
@@ -73,7 +87,7 @@ export default function ScheduledReportingPage() {
           email: form.email ? [form.email] : [],
           savePath: form.savePath,
         },
-        nextRunAt: form.nextRunAt,
+        nextRunAt: normalizeScheduleDateTime(form.nextRunAt, form.timezone),
       });
 
       if (res.data?.schedule) {

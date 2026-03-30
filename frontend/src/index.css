@@ -3156,10 +3156,38 @@ tbody tr:hover td {
   padding: 24px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 20% 20%, rgba(217, 204, 255, 0.48), transparent 24%),
-    radial-gradient(circle at 82% 16%, rgba(191, 220, 255, 0.38), transparent 24%),
-    radial-gradient(circle at 30% 80%, rgba(255, 214, 186, 0.28), transparent 20%),
-    linear-gradient(180deg, #f8f6ff 0%, #f4f1ff 52%, #fcfbff 100%);
+    radial-gradient(circle at 14% 20%, rgba(191, 205, 255, 0.55), transparent 28%),
+    radial-gradient(circle at 85% 12%, rgba(153, 221, 239, 0.40), transparent 26%),
+    radial-gradient(circle at 72% 85%, rgba(255, 220, 189, 0.32), transparent 24%),
+    linear-gradient(165deg, #f4f6ff 0%, #f2efff 44%, #fbf9ff 100%);
+}
+
+.auth-page::before,
+.auth-page::after,
+.login-page::before,
+.login-page::after {
+  content: '';
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.auth-page::before,
+.login-page::before {
+  width: 260px;
+  height: 260px;
+  top: -90px;
+  right: -70px;
+  background: radial-gradient(circle, rgba(125, 169, 255, 0.35), rgba(125, 169, 255, 0));
+}
+
+.auth-page::after,
+.login-page::after {
+  width: 320px;
+  height: 320px;
+  left: -130px;
+  bottom: -140px;
+  background: radial-gradient(circle, rgba(255, 196, 155, 0.28), rgba(255, 196, 155, 0));
 }
 
 .login-card,
@@ -3167,12 +3195,15 @@ tbody tr:hover td {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 410px;
-  padding: 26px 24px;
+  max-width: 440px;
+  padding: 30px 26px;
   border-radius: 26px;
-  background: rgba(255, 255, 255, 0.68);
-  border: 1px solid rgba(255,255,255,0.56);
-  box-shadow: 0 24px 52px rgba(129, 112, 187, 0.16);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.90), rgba(250, 252, 255, 0.84));
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow:
+    0 22px 52px rgba(72, 82, 126, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(18px);
   color: var(--text);
 }
@@ -3188,8 +3219,9 @@ tbody tr:hover td {
 }
 
 .auth-subtitle {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   color: var(--text-soft);
+  font-weight: 600;
 }
 
 .login-card input,
@@ -3199,10 +3231,11 @@ tbody tr:hover td {
   width: 100%;
   padding: 12px 14px;
   border-radius: 14px;
-  border: 1px solid rgba(143, 122, 234, 0.14);
+  border: 1px solid rgba(136, 144, 203, 0.20);
   background: rgba(255, 255, 255, 0.86);
   color: var(--text);
   outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .login-card input::placeholder,
@@ -3212,8 +3245,9 @@ tbody tr:hover td {
 
 .login-card input:focus,
 .auth-form input:focus {
-  border-color: rgba(143, 122, 234, 0.42);
-  box-shadow: 0 0 0 4px rgba(143, 122, 234, 0.10);
+  border-color: rgba(102, 130, 213, 0.5);
+  box-shadow: 0 0 0 4px rgba(121, 142, 230, 0.14);
+  transform: translateY(-1px);
 }
 
 .auth-form {
@@ -3227,11 +3261,11 @@ tbody tr:hover td {
   padding: 12px 16px;
   border: none;
   border-radius: 14px;
-  background: linear-gradient(135deg, #d7cbff, #bcdcff);
-  color: #493d6c;
+  background: linear-gradient(135deg, #cbbdfa, #9dc5ef 56%, #86d5d7 100%);
+  color: #332b54;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 12px 20px rgba(181, 173, 255, 0.18);
+  box-shadow: 0 12px 24px rgba(132, 133, 219, 0.25);
   transition: var(--transition);
 }
 
@@ -3260,9 +3294,36 @@ tbody tr:hover td {
 }
 
 .auth-switch a {
-  color: #6e60b8;
+  color: #4f4ec2;
   font-weight: 700;
   text-decoration: underline;
+}
+
+.auth-team-credit {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(123, 134, 192, 0.18);
+  text-align: center;
+}
+
+.auth-team-title {
+  margin: 0 0 8px;
+  color: #364f73;
+  font-weight: 800;
+}
+
+.auth-team-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+}
+
+.auth-team-list li {
+  color: #3f5978;
+  font-weight: 600;
+  letter-spacing: 0.1px;
 }
 
 .page-center {

@@ -71,6 +71,16 @@ export default function LoginPage() {
         <p className="auth-switch">
           Don’t have an account? <Link to="/register">Register</Link>
         </p>
+
+        <div className="auth-team-credit">
+          <p className="auth-team-title">Built by Team Hackerboyz</p>
+          <ul className="auth-team-list" aria-label="Team members">
+            <li>Dipendra Pratap Singh</li>
+            <li>Kartikeya Katiyar</li>
+            <li>Rohit Raj</li>
+            <li>Vedansh Pandey</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

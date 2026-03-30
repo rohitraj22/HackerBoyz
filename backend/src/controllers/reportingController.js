@@ -37,8 +37,24 @@ function normalizeDelivery(deliveryInput = {}) {
   };
 }
 
-function computeFirstRunAt(nextRunAtInput, frequency) {
-  const parsed = new Date(nextRunAtInput);
+function parseScheduleDateTime(nextRunAtInput, timezone = 'Asia/Kolkata') {
+  const raw = String(nextRunAtInput || '').trim();
+  if (!raw) return new Date('invalid');
+
+  const hasOffset = /(?:z|[+-]\d{2}:\d{2})$/i.test(raw);
+  if (hasOffset) {
+    return new Date(raw);
+  }
+
+  if (timezone === 'Asia/Kolkata') {
+    return new Date(`${raw}+05:30`);
+  }
+
+  return new Date(raw);
+}
+
+function computeFirstRunAt(nextRunAtInput, frequency, timezone = 'Asia/Kolkata') {
+  const parsed = parseScheduleDateTime(nextRunAtInput, timezone);
   if (Number.isNaN(parsed.getTime())) {
     return null;
   }
@@ -1391,7 +1407,7 @@ export async function generateReport(req, res, next) {
 export async function createReportSchedule(req, res, next) {
   try {
     const userId = getUserId(req);
-    const firstRunAt = computeFirstRunAt(req.body.nextRunAt, req.body.frequency);
+    const firstRunAt = computeFirstRunAt(req.body.nextRunAt, req.body.frequency, req.body.timezone || 'Asia/Kolkata');
 
     if (!firstRunAt) {
       return res.status(400).json({ message: 'Invalid schedule time provided.' });
@@ -1449,7 +1465,8 @@ export async function updateReportSchedule(req, res, next) {
 
     if (Object.prototype.hasOwnProperty.call(update, 'nextRunAt')) {
       const frequency = update.frequency || existingSchedule.frequency;
-      const computed = computeFirstRunAt(update.nextRunAt, frequency);
+      const timezone = update.timezone || existingSchedule.timezone || 'Asia/Kolkata';
+      const computed = computeFirstRunAt(update.nextRunAt, frequency, timezone);
       if (!computed) {
         return res.status(400).json({ message: 'Invalid schedule time provided.' });
       }

@@ -58,12 +58,47 @@ export default function OnDemandReportingPage() {
           savePath: form.savePath,
         },
       });
+      const report = res.data?.report || null;
+      const normalizedDownloadUrl = report?._id
+        ? reportingApi.getDownloadUrl(report._id, res.data?.downloadUrl)
+        : '';
 
-      setResult(res.data || { message: 'Report generated successfully.' });
+      setResult({
+        ...(res.data || { message: 'Report generated successfully.' }),
+        downloadUrl: normalizedDownloadUrl,
+      });
     } catch (err) {
       setError(err.message || 'Failed to generate report');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDownloadGenerated = async () => {
+    const reportId = result?.report?._id;
+    if (!reportId) return;
+
+    try {
+      const response = await reportingApi.downloadGenerated(reportId);
+      const format = String(result?.report?.format || 'pdf').toLowerCase();
+      const mimeByFormat = {
+        pdf: 'application/pdf',
+        json: 'application/json',
+        csv: 'text/csv',
+      };
+      const blob = new Blob([response.data], { type: mimeByFormat[format] || 'application/octet-stream' });
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      const safeType = String(result?.report?.reportType || 'report').replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+
+      anchor.href = downloadUrl;
+      anchor.download = `${safeType}-${reportId}.${format}`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (err) {
+      setError(err.message || 'Failed to download generated report');
     }
   };
 
@@ -91,9 +126,9 @@ export default function OnDemandReportingPage() {
             {result.downloadUrl ? (
               <>
                 {' '}
-                <a href={result.downloadUrl} target="_blank" rel="noreferrer">
-                  Open generated report
-                </a>
+                <button type="button" className="btn btn-secondary" onClick={handleDownloadGenerated}>
+                  Download generated report
+                </button>
               </>
             ) : null}
           </div>

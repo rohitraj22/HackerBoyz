@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const configuredBaseUrl = String(import.meta.env.VITE_API_BASE_URL || 'https://hackerboyz.onrender.com').trim();
+export const apiBaseUrl = configuredBaseUrl;
 
 const api = axios.create({
   baseURL: configuredBaseUrl,

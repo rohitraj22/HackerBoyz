@@ -1,5 +1,15 @@
 import api from './axios';
 
+function absoluteReportingUrl(path = '') {
+  const raw = String(path || '').trim();
+  if (!raw) return '';
+  if (/^https?:\/\//i.test(raw)) return raw;
+
+  const base = String(api.defaults.baseURL || '').replace(/\/+$/, '');
+  const suffix = raw.startsWith('/') ? raw : `/${raw}`;
+  return `${base}${suffix}`;
+}
+
 export const reportingApi = {
   getOptions() {
     return api.get('/api/reporting/options');
@@ -24,5 +34,12 @@ export const reportingApi = {
   },
   downloadGenerated(id) {
     return api.get(`/api/reporting/generated/${id}/download`, { responseType: 'blob' });
+  },
+  getDownloadUrl(reportId, fallbackUrl = '') {
+    const fallback = String(fallbackUrl || '').trim();
+    if (fallback) {
+      return absoluteReportingUrl(fallback);
+    }
+    return absoluteReportingUrl(`/api/reporting/generated/${reportId}/download`);
   },
 };
