@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const configuredBaseUrl = String(import.meta.env.VITE_API_BASE_URL || 'https://hacker-boyz-backend.vercel.app').trim();
+
 const api = axios.create({
-  baseURL: '/',
+  baseURL: configuredBaseUrl,
   timeout: 60000,
   withCredentials: true,
 });
