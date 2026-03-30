@@ -24,18 +24,27 @@ export function AuthProvider({ children }) {
 
   const login = async (credentials) => {
     const res = await loginApi(credentials);
+    const token = res.data?.token;
+    if (token) {
+      window.localStorage.setItem('qs_token', token);
+    }
     setUser(res.data.user);
     return res.data;
   };
 
   const register = async (payload) => {
     const res = await registerApi(payload);
+    const token = res.data?.token;
+    if (token) {
+      window.localStorage.setItem('qs_token', token);
+    }
     setUser(res.data.user);
     return res.data;
   };
 
   const logout = async () => {
     await logoutApi();
+    window.localStorage.removeItem('qs_token');
     setUser(null);
   };
 

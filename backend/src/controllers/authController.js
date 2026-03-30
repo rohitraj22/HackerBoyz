@@ -1,6 +1,12 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
+function extractBearerToken(req) {
+  const header = String(req.headers?.authorization || '');
+  if (!header.toLowerCase().startsWith('bearer ')) return '';
+  return header.slice(7).trim();
+}
+
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
     expiresIn: "7d",
@@ -34,6 +40,7 @@ export const registerUser = async (req, res, next) => {
 
     res.status(201).json({
       message: "User registered successfully",
+      token,
       user: {
         id: user._id,
         name: user.name,
@@ -60,6 +67,7 @@ export const loginUser = async (req, res, next) => {
 
     res.status(200).json({
       message: "Login successful",
+      token,
       user: {
         id: user._id,
         name: user.name,
@@ -86,7 +94,7 @@ export const getMe = async (req, res, next) => {
     let userId = req.user?.id || req.user?._id || null;
 
     if (!userId) {
-      const token = req.cookies?.token;
+      const token = req.cookies?.token || extractBearerToken(req);
 
       if (!token) {
         return res.status(200).json({ user: null });
