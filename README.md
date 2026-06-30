@@ -2,6 +2,8 @@
 
 Quantum Scanner App is a full-stack cyber and cryptographic posture platform focused on discovery, PQC readiness, CBOM intelligence, enterprise rating, and operational reporting.
 
+- Deployed on: https://hackerboyz.netlify.app/
+
 Core stack:
 - Frontend: React + Vite
 - Backend: Node.js + Express
@@ -22,14 +24,6 @@ The platform provides:
 - Enterprise cyber rating on a 0-1000 scale
 - Executive/on-demand/scheduled reporting workflows
 - Scheduled report generation and email delivery with attachments (PDF/JSON/CSV)
-
-## Recent Changes (March 2026)
-
-- Report PDFs are now report-type specific (Executive, Asset Discovery, Asset Inventory, CBOM, PQC Posture, Cyber Rating), not a shared generic template.
-- PDF output has a refreshed visual style: branded hero header, metric ribbons, styled section cards, and improved typography/spacing.
-- PQC Posture data is user-scoped: users only see assets/scans tied to their own account.
-- Cyber Rating data is user-scoped: enterprise score and rating assets are calculated from the logged-in user's scans/assets only.
-- Reporting data is user-scoped: report generation, downloads, and scheduled report asset selection are restricted to the report owner's scan scope.
 
 ## Repository Layout
 
